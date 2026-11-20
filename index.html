@@ -457,7 +457,11 @@
         "   - Los pines de salida de un microcontrolador son biestables (latches): retienen su estado anterior indefinidamente.",
         "   - REGLA: Por cada pin o actuador que pongas en HIGH (o enciendas) en una rama if, DEBES forzarlo explícitamente a LOW (o apagarlo) en la rama else o en el estado siguiente.",
         "",
-        "2. SINTAXIS ES5 CLÁSICA Y DECLARACIÓN DE VARIABLES CON 'var':",
+        "2. ESTRUCTURA OBLIGATORIA DEL SCRIPT (setup Y loop):",
+        "   - Todo script de Cisco Packet Tracer DEBE definir SIEMPRE las funciones 'function setup() { ... }' y 'function loop() { ... }'.",
+        "   - Las llamadas a pinMode(pin, INPUT) y pinMode(pin, OUTPUT) DEBEN colocarse OBLIGATORIAMENTE dentro de function setup() { ... }. PROHIBIDO dejarlas sueltas en el ámbito global fuera de setup().",
+        "",
+        "3. SINTAXIS ES5 CLÁSICA Y DECLARACIÓN DE VARIABLES CON 'var':",
         "   - El motor embebido de Packet Tracer es ECMAScript 5 (ES5) puro. NO soporta ES6+.",
         "   - PROHIBIDO usar 'let', 'const', funciones flecha (() => {}), 'class', 'Promise', 'async/await'.",
         "   - OBLIGATORIO: Declara SIEMPRE al inicio del script las variables para todos los pines usando 'var' con nombres descriptivos (ej: var SENSOR = 0; var ROJO = 0; var VERDE = 1; var BOMBA = 2; var BOTON = 3;). NUNCA uses números mágicos directos (0, 1, 2...) en pinMode() o digitalWrite().",
@@ -614,6 +618,10 @@
             cleaned = cleaned.replace(/\b(?:let|const)\s+([a-zA-Z0-9_]+)\b/g, 'var $1');
             // Auto-corrección: convertir identificadores de pin sueltos como '= A0;' o '= D1;' a número puro '= 0;' o '= 1;'
             cleaned = cleaned.replace(/=\s*[aAdD]([0-5])\s*;/g, '= $1;');
+            // Auto-corrección: si las llamadas pinMode quedaron sueltas, envolverlas en function setup()
+            if (!/function\s+setup\s*\(/.test(cleaned) && /pinMode\s*\(/.test(cleaned)) {
+              cleaned = cleaned.replace(/((?:[ \t]*pinMode\s*\([^;]+;\s*\n?)+)/, 'function setup() {\n$1}\n\n');
+            }
             generatedCode = cleaned;
 
             if (scopeLabel) scopeLabel.textContent = 'Learner :)';
