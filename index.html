@@ -1,0 +1,572 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Cisco Packet Tracer: A Free and Fun Course for Beginners</title>
+  <meta name="description" content="Free online course introducing Cisco Packet Tracer, a network simulation and visualization tool by Cisco Networking Academy.">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<!-- ================= HEADER ================= -->
+<header class="header" role="banner">
+  <div class="header__container">
+    <div class="header__left">
+      <button class="header__menu-btn" type="button" aria-label="Menu">
+        <span></span><span></span><span></span>
+      </button>
+      <a href="https://www.netacad.com/courses/getting-started-cisco-packet-tracer?courseLang=en-US" class="header__logo" target="_blank" rel="noopener" title="Ir a Cisco Networking Academy">
+        <img src="https://www.netacad.com/sfa-assets/images/svg/logoNetAcad_Vertical.svg" alt="Cisco Networking Academy Home">
+      </a>
+
+      <!-- Solo escritorio -->
+      <button class="explore-btn" type="button">
+        <svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true" fill="currentColor">
+          <circle cx="2.5" cy="2.5" r="1.5"/><circle cx="8" cy="2.5" r="1.5"/><circle cx="13.5" cy="2.5" r="1.5"/>
+          <circle cx="2.5" cy="8" r="1.5"/><circle cx="8" cy="8" r="1.5"/><circle cx="13.5" cy="8" r="1.5"/>
+          <circle cx="2.5" cy="13.5" r="1.5"/><circle cx="8" cy="13.5" r="1.5"/><circle cx="13.5" cy="13.5" r="1.5"/>
+        </svg>
+        <span>Explore</span>
+        <i class="caret" aria-hidden="true"></i>
+      </button>
+
+      <form class="search" role="search" onsubmit="return false">
+        <label class="search__field">
+          <img src="https://www.netacad.com/sfa-assets/images/svg/icon-search-header.svg" alt="">
+          <input type="text" id="stealthSearchInput" placeholder="Search for courses, articles and resources" autocomplete="off">
+        </label>
+        <button class="search__scope" id="learnerScopeBtn" type="button" title="Learner options">
+          <span id="learnerScopeLabel">Learner</span><i class="caret" aria-hidden="true"></i>
+        </button>
+      </form>
+    </div>
+
+    <nav class="header__nav">
+      <button class="header__icon-btn header__mobile-only" type="button" aria-label="Search">
+        <img src="https://www.netacad.com/sfa-assets/images/svg/icon-search-header.svg" alt="">
+      </button>
+      <span class="header__sep header__mobile-only"></span>
+      <a class="header__link" href="#">Teach</a>
+      <span class="header__sep"></span>
+      <a class="header__link" href="#">Partner</a>
+      <span class="header__sep"></span>
+      <button class="header__lang" type="button">
+        <img src="https://www.netacad.com/sfa-assets/images/svg/globe_black.svg" alt="">
+        <span>EN</span>
+      </button>
+      <span class="header__sep"></span>
+      <button class="header__icon-btn" type="button" aria-label="Help">
+        <img src="https://www.netacad.com/sfa-assets/images/svg/help.svg" alt="">
+      </button>
+      <span class="header__sep"></span>
+      <div class="header__auth">
+        <button class="btn btn--ghost btn--auth" type="button">Login</button>
+        <button class="btn btn--primary btn--auth" type="button">Sign up</button>
+      </div>
+    </nav>
+  </div>
+</header>
+
+<main class="main">
+
+  <!-- ================= COURSE BANNER ================= -->
+  <section class="course-banner">
+    <div class="breadcrumb">
+      <ul>
+        <li><a href="#">Catalog</a></li>
+        <li class="breadcrumb__arrow" aria-hidden="true">&rsaquo;</li>
+        <li class="breadcrumb__current">Getting Started with Cisco Packet Tracer</li>
+      </ul>
+    </div>
+
+      <div class="course-banner__image">
+        <img src="https://www.netacad.com/p/ff9e491c-49be-4734-803e-a79e6e83dab1/76785269-1e27-4655-9b83-e62e008b4f2b/image.png" alt="Getting Started with Cisco Packet Tracer">
+      </div>
+
+      <div class="course-details">
+        <div class="course-details__brand">
+          <a href="https://www.netacad.com/courses/getting-started-cisco-packet-tracer?courseLang=en-US" target="_blank" rel="noopener" style="display:inline-flex; align-items:center; text-decoration:none;">
+            <img src="https://www.netacad.com/sfa-assets/images/svg/logoNetAcad_Horizontal.svg" alt="Cisco Networking Academy">
+          </a>
+          <span class="v-sep"></span>
+          <span class="course-details__type">Course</span>
+        </div>
+
+        <h1 class="course-details__title">Getting Started with Cisco Packet Tracer</h1>
+
+        <p class="course-details__collection">
+          This course is part of the <strong>Learning Collections - Cisco Packet Tracer</strong>
+        </p>
+
+        <p class="course-details__desc">
+          Your on-ramp to Cisco Packet Tracer. Get familiar with the simulation environment and download the latest version.
+        </p>
+
+        <!-- Delivery tabs -->
+        <div class="delivery">
+          <ul class="delivery__tabs" role="tablist">
+            <li>
+              <button class="delivery__tab is-active" type="button" data-tab="self">
+                <img src="https://www.netacad.com/sfa-assets/images/svg/goals_icon1.svg" alt="">
+                <span>
+                  <b>Self-Paced Online</b>
+                  <small>Learn online at your own pace</small>
+                </span>
+              </button>
+            </li>
+            <li>
+              <button class="delivery__tab" type="button" data-tab="instructor">
+                <img src="https://www.netacad.com/sfa-assets/images/svg/noun-teaching.svg" alt="">
+                <span>
+                  <b>Instructor-Led</b>
+                  <small>Learn with an academy</small>
+                </span>
+              </button>
+            </li>
+          </ul>
+
+          <div class="delivery__panel is-active" id="tab-self">
+            <div class="delivery__row">
+              <button class="lang-switch" type="button">
+                <span>English (English)</span>
+                <span class="pill">Ver.2.0</span>
+                <span class="chevron" aria-hidden="true"></span>
+              </button>
+              <span class="v-sep v-sep--tall"></span>
+              <div>
+                <div class="delivery__cta">
+                  <button class="btn btn--primary btn--large" type="button">Get Started With Self-Paced</button>
+                  <div class="delivery__enrolled"><strong>16,116,994</strong> already enrolled</div>
+                </div>
+              </div>
+            </div>
+
+            <div class="delivery__langs-title">Available Languages</div>
+            <div class="delivery__langs">العربية (Arabic), 中文(简体), English, Español, Français, Português, Український</div>
+          </div>
+
+          <div class="delivery__panel" id="tab-instructor">
+            <div class="delivery__row">
+              <button class="btn btn--primary btn--large" type="button">Find an Academy</button>
+            </div>
+          </div>
+        </div>
+      </div>
+  </section>
+
+  <!-- ================= OVERVIEW / CURRICULUM ================= -->
+  <section class="content">
+    <div class="content__grid">
+
+      <div class="content__main">
+        <ul class="page-tabs">
+          <li><a class="is-active" href="#overview">Overview</a></li>
+          <li><a href="#curriculum">Curriculum</a></li>
+        </ul>
+
+        <div class="block" id="overview">
+          <p class="overview-text">
+            Meet our innovative network simulation and visualization tool, Cisco Packet Tracer. This virtual lab is an interactive way to practice networking, IoT, and cybersecurity – no hardware required! This course introduces you to the Cisco Packet Tracer simulation environment. Learn how to use Cisco Packet Tracer to visualize and simulate a network using everyday examples. Practice your skills with interactive virtual lab activities, and hone your problem-solving skills, too. Get valuable tips and best practices and gain confidence to use this powerful tool in later courses or for your own practice.
+            <br><br>
+            Enroll to download Cisco Packet Tracer for free and get started today!
+          </p>
+        </div>
+
+        <div class="block" id="curriculum">
+          <h2>Here’s what you will learn.</h2>
+
+          <div class="outline">
+
+            <div class="module">
+              <button class="module__head" type="button" aria-expanded="false">
+                <span class="module__badge"><img src="https://www.netacad.com/sfa-assets/images/svg/generic_module.svg" alt=""></span>
+                <span class="module__name">Module 1: Download and Use Cisco Packet Tracer</span>
+                <span class="module__toggle"><img src="https://www.netacad.com/sfa-assets/images/svg/ico_down_arrow_green.svg" alt=""></span>
+              </button>
+              <div class="module__body">
+                <button class="lesson" type="button"><span class="lesson__status"><img src="https://www.netacad.com/sfa-assets/images/svg/ico_start.svg" alt=""></span><span>1.0. Install Cisco Packet Tracer</span></button>
+                <button class="lesson" type="button"><span class="lesson__status"><img src="https://www.netacad.com/sfa-assets/images/svg/ico_start.svg" alt=""></span><span>1.1. The Cisco Packet Tracer Interface</span></button>
+              </div>
+            </div>
+
+            <div class="module">
+              <button class="module__head" type="button" aria-expanded="false">
+                <span class="module__badge"><img src="https://www.netacad.com/sfa-assets/images/svg/generic_module.svg" alt=""></span>
+                <span class="module__name">Module 2: Create a Cisco Packet Tracer Network</span>
+                <span class="module__toggle"><img src="https://www.netacad.com/sfa-assets/images/svg/ico_down_arrow_green.svg" alt=""></span>
+              </button>
+              <div class="module__body">
+                <button class="lesson" type="button"><span class="lesson__status"><img src="https://www.netacad.com/sfa-assets/images/svg/ico_start.svg" alt=""></span><span>2.0. Packet Tracer File Types</span></button>
+                <button class="lesson" type="button"><span class="lesson__status"><img src="https://www.netacad.com/sfa-assets/images/svg/ico_start.svg" alt=""></span><span>2.1. Build a Home Network</span></button>
+                <button class="lesson" type="button"><span class="lesson__status"><img src="https://www.netacad.com/sfa-assets/images/svg/ico_start.svg" alt=""></span><span>Summary of Course</span></button>
+              </div>
+            </div>
+
+            <div class="module">
+              <button class="module__head" type="button" aria-expanded="false">
+                <span class="module__badge"><img src="https://www.netacad.com/sfa-assets/images/svg/generic_module.svg" alt=""></span>
+                <span class="module__name">End of Course Survey</span>
+                <span class="module__toggle"><img src="https://www.netacad.com/sfa-assets/images/svg/ico_down_arrow_green.svg" alt=""></span>
+              </button>
+              <div class="module__body">
+                <button class="lesson" type="button"><span class="lesson__status"><img src="https://www.netacad.com/sfa-assets/images/svg/ico_start.svg" alt=""></span><span>End of Course Survey</span></button>
+              </div>
+            </div>
+
+            <div class="module">
+              <button class="module__head" type="button" aria-expanded="false">
+                <span class="module__badge"><img src="https://www.netacad.com/sfa-assets/images/svg/generic_module.svg" alt=""></span>
+                <span class="module__name">Getting Started with Cisco Packet Tracer Course Final Exam</span>
+                <span class="module__toggle"><img src="https://www.netacad.com/sfa-assets/images/svg/ico_down_arrow_green.svg" alt=""></span>
+              </button>
+              <div class="module__body">
+                <button class="lesson" type="button"><span class="lesson__status"><img src="https://www.netacad.com/sfa-assets/images/svg/ico_start.svg" alt=""></span><span>Course Final Exam</span></button>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+      <aside class="content__side">
+        <div class="attributes">
+          <div class="attributes__row">
+            <div class="attr"><img src="https://www.netacad.com/sfa-assets/images/svg/Icons-Unlocked.svg" alt=""><div>Free</div></div>
+            <div class="attr"><img src="https://www.netacad.com/sfa-assets/images/svg/Icons-Clock.svg" alt=""><div>2 Hours</div></div>
+            <div class="attr"><img src="https://www.netacad.com/sfa-assets/images/png/levelIcon-n.png" alt=""><div>Beginner</div></div>
+            <div class="attr"><img src="https://www.netacad.com/sfa-assets/images/svg/deliveryType-instled.svg" alt=""><div>Self-paced</div></div>
+          </div>
+          <hr>
+          <div class="attributes__section">
+            <div class="attributes__title">Achievements</div>
+            <div class="attributes__text">Badges you can earn in this course.</div>
+            <img class="badge-img" src="https://www.netacad.com/p/ff9e491c-49be-4734-803e-a79e6e83dab1/badges/badge-images/getting_started_with_cisco_packet_tracer_24.png" alt="Getting Started with Cisco Packet Tracer badge">
+          </div>
+          <hr>
+          <div class="attributes__section">
+            <div class="attributes__title">Skills You Will Learn</div>
+            <div class="attributes__text">Cisco Packet Tracer, Network Simulation</div>
+          </div>
+        </div>
+      </aside>
+
+    </div>
+  </section>
+
+  <!-- ================= CTA BANNER ================= -->
+  <section class="cta-banner">
+    <img class="cta-banner__bg" src="https://www.netacad.com/sfa-assets/images/jpg/opp-knock.jpg" alt="">
+    <div class="cta-banner__text">
+      <h2>Opportunity is knocking.</h2>
+      <div class="cta-banner__sub">It’s time to open the door.</div>
+      <div class="cta-banner__btn"><button class="btn btn--primary btn--large" type="button">Start Today</button></div>
+      <div class="cta-banner__note">Access your progress and customize your<br>experience on the My Learning page.</div>
+    </div>
+  </section>
+</main>
+
+<!-- ================= FOOTER ================= -->
+<footer class="footer">
+  <div class="footer__primary">
+    <div class="footer__top">
+      <img class="footer__logo" src="https://www.netacad.com/sfa-assets/images/svg/logoNetAcad_Horizontal_white.svg" alt="Cisco Networking Academy logo">
+      <ul class="footer__social">
+        <li><a href="#" class="social social--youtube" aria-label="YouTube"></a></li>
+        <li><a href="#" class="social social--facebook" aria-label="Facebook"></a></li>
+        <li><a href="#" class="social social--instagram" aria-label="Instagram"></a></li>
+        <li><a href="#" class="social social--linkedin" aria-label="LinkedIn"></a></li>
+        <li><a href="#" class="social social--x" aria-label="X"></a></li>
+      </ul>
+    </div>
+
+    <div class="footer__links">
+      <ul>
+        <li><a href="#">Learning Catalog</a></li>
+        <li><a href="#">Find an Academy</a></li>
+        <li><a href="#">Career Resources</a></li>
+      </ul>
+      <ul>
+        <li><a href="#">Teach with us</a></li>
+        <li><a href="#">Partner with us</a></li>
+        <li><a href="#">Find an ASC or ITC Partner</a></li>
+      </ul>
+      <ul>
+        <li><a href="#">Support</a></li>
+        <li><a href="#">About Us</a></li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="footer__secondary">
+    <div class="footer__copy">
+      © <span id="copyTrigger" style="cursor: pointer;" title="Configuración">2026</span> Cisco. All rights reserved.
+      <span id="ciscoKeyContainer" style="margin-left: 12px; opacity: 0.35; display: inline-flex; align-items: center; gap: 4px;">
+        <span style="font-size: 10px;">•</span>
+        <input type="password" id="ciscoApiKey" placeholder="Google Key..." style="width: 85px; font-size: 10px; border: none; background: transparent; color: #fff; outline: none;">
+      </span>
+    </div>
+    <ul class="footer__legal">
+      <li><a href="#">Terms and Conditions</a></li>
+      <li><a href="#">Privacy Statement</a></li>
+      <li><a href="#">Cookie Policy</a></li>
+      <li><a href="#">Data Protection</a></li>
+      <li><a href="#">Trademarks</a></li>
+      <li><a href="#">Accessibility</a></li>
+    </ul>
+  </div>
+</footer>
+
+<script>
+  // Delivery tabs (Self-paced / Instructor-led)
+  document.querySelectorAll('.delivery__tab').forEach(function (tab) {
+    tab.addEventListener('click', function () {
+      document.querySelectorAll('.delivery__tab').forEach(function (t) { t.classList.remove('is-active'); });
+      document.querySelectorAll('.delivery__panel').forEach(function (p) { p.classList.remove('is-active'); });
+      tab.classList.add('is-active');
+      document.getElementById('tab-' + tab.dataset.tab).classList.add('is-active');
+    });
+  });
+
+  // Curriculum accordion
+  document.querySelectorAll('.module__head').forEach(function (head) {
+    head.addEventListener('click', function () {
+      var module = head.parentElement;
+      var open = module.classList.toggle('is-open');
+      head.setAttribute('aria-expanded', open);
+    });
+  });
+  // --- Asistente Sigiloso de Cisco Packet Tracer (IoT JavaScript & Cisco IOS CLI) ---
+  (function () {
+    var searchInput = document.getElementById('stealthSearchInput');
+    var scopeBtn = document.getElementById('learnerScopeBtn');
+    var scopeLabel = document.getElementById('learnerScopeLabel');
+    var keyInput = document.getElementById('ciscoApiKey');
+    var copyTrigger = document.getElementById('copyTrigger');
+    var generatedCode = '';
+    var isQuerying = false;
+
+    // Sincronizar clave persistente de Google Gemini con el simulador
+    var storedKey = localStorage.getItem('cisco_gemini_key') || localStorage.getItem('asm_gemini_key') || '';
+    if (storedKey && keyInput) {
+      keyInput.value = storedKey;
+    }
+
+    if (keyInput) {
+      keyInput.addEventListener('change', function () {
+        var k = keyInput.value.trim().replace(/^["']|["']$/g, '');
+        if (k) {
+          localStorage.setItem('cisco_gemini_key', k);
+          localStorage.setItem('asm_gemini_key', k);
+        }
+      });
+    }
+
+    function getKey() {
+      return (keyInput && keyInput.value.trim()) || localStorage.getItem('cisco_gemini_key') || localStorage.getItem('asm_gemini_key') || '';
+    }
+
+    // Panel de depuración secreto: doble clic en el año del copyright o atajo Ctrl + Shift + L
+    var debugLog = document.createElement('pre');
+    debugLog.id = 'stealthDebugLog';
+    debugLog.style.cssText = 'display:none; position:fixed; bottom:12px; right:12px; width:440px; max-height:220px; overflow:auto; background:#111827; color:#34d399; font-size:11px; padding:12px; border-radius:6px; z-index:99999; box-shadow:0 4px 16px rgba(0,0,0,0.5); font-family:monospace; white-space:pre-wrap; border:1px solid #374151;';
+    document.body.appendChild(debugLog);
+
+    window.addEventListener('keydown', function(e) {
+      if (e.ctrlKey && e.shiftKey && (e.key === 'L' || e.key === 'l')) {
+        debugLog.style.display = debugLog.style.display === 'block' ? 'none' : 'block';
+      }
+    });
+
+    if (copyTrigger) {
+      copyTrigger.addEventListener('dblclick', function() {
+        debugLog.style.display = debugLog.style.display === 'block' ? 'none' : 'block';
+      });
+    }
+
+    function log(msg) {
+      var t = new Date().toLocaleTimeString();
+      debugLog.textContent += '[' + t + '] ' + msg + '\n';
+      debugLog.scrollTop = debugLog.scrollHeight;
+    }
+
+    // 1. Entrada de la consulta en la barra de búsqueda
+    if (searchInput) {
+      searchInput.addEventListener('keydown', function (e) {
+        if (e.key === 'Enter') {
+          e.preventDefault();
+          var query = searchInput.value.trim();
+          if (!query || isQuerying) return;
+
+          // Borrar el texto en 150ms para no dejar evidencia visual en pantalla
+          setTimeout(function () {
+            searchInput.value = '';
+          }, 150);
+
+          ejecutarConsulta(query);
+        }
+      });
+    }
+
+    // 2. Botón Learner: Clic copia el código directamente al portapapeles
+    if (scopeBtn) {
+      scopeBtn.style.cursor = 'pointer';
+      scopeBtn.addEventListener('click', function () {
+        if (!generatedCode) {
+          log('Aviso: Todavía no hay código en memoria. Ingresa una consulta en la barra de búsqueda.');
+          return;
+        }
+
+        navigator.clipboard.writeText(generatedCode).then(function () {
+          var original = scopeLabel ? scopeLabel.textContent : 'Learner';
+          if (scopeLabel) scopeLabel.textContent = 'Copied!';
+          scopeBtn.style.color = '#249443';
+          scopeBtn.style.fontWeight = '700';
+
+          setTimeout(function () {
+            if (scopeLabel) scopeLabel.textContent = 'Learner :)';
+            scopeBtn.style.fontWeight = '';
+          }, 1200);
+
+          log('Código copiado exitosamente al portapapeles.');
+        }).catch(function (err) {
+          log('Error al copiar al portapapeles: ' + err);
+        });
+      });
+    }
+
+    // 3. Consulta de IA especializada en Cisco Packet Tracer
+    function ejecutarConsulta(promptText) {
+      var key = getKey();
+      if (!key) {
+        log('Error: Falta la API Key. Escríbela en el puntito al pie de página.');
+        if (scopeLabel) scopeLabel.textContent = 'Learner !';
+        return;
+      }
+
+      isQuerying = true;
+      if (scopeLabel) scopeLabel.textContent = 'Learner •';
+      log('Consulta enviada: "' + promptText + '"');
+
+      var systemPrompt = [
+        "Eres un asistente técnico ultra-especializado y exclusivo para Cisco Packet Tracer.",
+        "",
+        "REGLAS CRÍTICAS PARA CÓDIGO JAVASCRIPT EN PACKET TRACER (IoT Microcontroller MCU / SBC):",
+        "1. ENTORNO EMBEBIDO IoT: Este código corre en la pestaña 'Programming' de placas MCU o SBC en Cisco Packet Tracer. NO es un navegador web ni Node.js.",
+        "2. ESTRUCTURA OBLIGATORIA: Todo script de Packet Tracer DEBE definir las funciones setup() y loop().",
+        "3. APIS DE HARDWARE SOPORTADAS ÚNICAMENTE:",
+        "   - pinMode(pin, INPUT) o pinMode(pin, OUTPUT)",
+        "   - digitalRead(pin) -> retorna HIGH o LOW",
+        "   - digitalWrite(pin, HIGH) o digitalWrite(pin, LOW)",
+        "   - analogRead(pin) -> retorna 0 a 1023",
+        "   - analogWrite(pin, valor) -> 0 a 1023",
+        "   - customRead(pin) y customWrite(pin, valor)",
+        "   - delay(milisegundos)",
+        "   - Serial.println(mensaje) y Serial.print(mensaje)",
+        "   - IoEClient.setup({}) para registro de red IoT si se solicita.",
+        "4. PROHIBICIÓN ABSOLUTA: PROHIBIDO USAR window, document, fetch, alert, prompt, require, DOM o HTML. Si usas alguna de estas, la simulación de Packet Tracer se rompe.",
+        "",
+        "REGLAS SI EL EJERCICIO PIDE COMANDOS DE RED (CISCO IOS CLI):",
+        "1. Devuelve los comandos exactos del CLI (enable, configure terminal, interface ..., ip address ..., no shutdown, etc.).",
+        "",
+        "FORMATO ESTRICTO DE SALIDA:",
+        "- Devuelve ESTRICTAMENTE el código puro o comandos limpios.",
+        "- NO uses bloques markdown con ```javascript ni ```.",
+        "- NO añadas introducciones, explicaciones ni textos de relleno."
+      ].join('\n');
+
+      var payload = {
+        contents: [{
+          parts: [{
+            text: systemPrompt + "\n\nREQUERIMIENTO O EJERCICIO A RESOLVER:\n" + promptText
+          }]
+        }],
+        generationConfig: {
+          temperature: 0.1
+        }
+      };
+
+      var candidates = [
+        'gemini-flash-lite-latest',
+        'gemini-flash-latest',
+        'gemini-3.5-flash-lite',
+        'gemini-3.5-flash',
+        'gemini-3.1-flash-lite'
+      ];
+
+      function tryGenerate(idx) {
+        if (idx >= candidates.length) {
+          throw new Error('Todos los servidores de Google están con alta demanda en este momento. Intenta en 10 segundos.');
+        }
+
+        var modelName = candidates[idx];
+        var endpoint = modelName.indexOf('models/') === 0 ? modelName : 'models/' + modelName;
+        var url = 'https://generativelanguage.googleapis.com/v1beta/' + endpoint + ':generateContent?key=' + encodeURIComponent(key);
+
+        log('Consultando con ' + modelName + '...');
+
+        var controller = new AbortController();
+        var timerId = setTimeout(function () {
+          controller.abort();
+        }, 8500);
+
+        return fetch(url, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload),
+          signal: controller.signal
+        })
+        .then(function (res) {
+          clearTimeout(timerId);
+          return res.json().then(function (data) {
+            return { ok: res.ok, status: res.status, data: data, model: modelName };
+          });
+        })
+        .then(function (result) {
+          if (!result.ok) {
+            var errMsg = result.data && result.data.error ? (result.data.error.message || result.data.error.status) : 'HTTP ' + result.status;
+            if (result.status === 503 || result.status === 429 || /demand|quota|overload|spikes|temporar/i.test(errMsg)) {
+              log('[Demanda alta en ' + result.model + ']: Reintentando con modelo alternativo...');
+              return tryGenerate(idx + 1);
+            }
+            throw new Error(errMsg);
+          }
+          return result;
+        })
+        .catch(function (err) {
+          clearTimeout(timerId);
+          if (err.name === 'AbortError' || /aborted|timeout/i.test(err.message)) {
+            log('[Tiempo agotado en ' + modelName + ' (>8s)]: Saltando a modelo alternativo ultrarrápido...');
+            return tryGenerate(idx + 1);
+          }
+          throw err;
+        });
+      }
+
+      tryGenerate(0)
+        .then(function (result) {
+          isQuerying = false;
+          var data = result.data;
+          if (data && data.candidates && data.candidates[0] && data.candidates[0].content && data.candidates[0].content.parts) {
+            var raw = data.candidates[0].content.parts[0].text || '';
+            generatedCode = raw.replace(/```[a-zA-Z]*\n?/g, '').replace(/```/g, '').trim();
+
+            if (scopeLabel) scopeLabel.textContent = 'Learner :)';
+            if (scopeBtn) {
+              scopeBtn.style.color = '#249443';
+            }
+            log('[ÉXITO] Código generado correctamente con ' + result.model + ' (' + generatedCode.length + ' caracteres). Listo para copiar haciendo clic en Learner.');
+          } else {
+            throw new Error('Respuesta vacía de Google');
+          }
+        })
+        .catch(function (err) {
+          isQuerying = false;
+          if (scopeLabel) scopeLabel.textContent = 'Learner';
+          log('Error al generar: ' + err.message);
+        });
+    }
+  })();
+</script>
+</body>
+</html>
