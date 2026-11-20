@@ -465,6 +465,7 @@
         "   - Serial.println(mensaje) y Serial.print(mensaje)",
         "   - IoEClient.setup({}) para registro de red IoT si se solicita.",
         "4. PROHIBICIÓN ABSOLUTA: PROHIBIDO USAR window, document, fetch, alert, prompt, require, DOM o HTML. Si usas alguna de estas, la simulación de Packet Tracer se rompe.",
+        "5. SINTAXIS JAVASCRIPT PURA: ¡ESTO ES JAVASCRIPT, NO C++ NI ARDUINO! En JavaScript NO existen 'int', 'float', 'void'. ¡PROHIBIDO escribir 'const int' o 'int'! Declara SIEMPRE todas las variables con 'var' (ej. var smokePin = 0;).",
         "",
         "REGLAS SI EL EJERCICIO PIDE COMANDOS DE RED (CISCO IOS CLI):",
         "1. Devuelve los comandos exactos del CLI (enable, configure terminal, interface ..., ip address ..., no shutdown, etc.).",
@@ -549,7 +550,11 @@
           var data = result.data;
           if (data && data.candidates && data.candidates[0] && data.candidates[0].content && data.candidates[0].content.parts) {
             var raw = data.candidates[0].content.parts[0].text || '';
-            generatedCode = raw.replace(/```[a-zA-Z]*\n?/g, '').replace(/```/g, '').trim();
+            var cleaned = raw.replace(/```[a-zA-Z]*\n?/g, '').replace(/```/g, '').trim();
+            // Auto-corrección: convertir cualquier residuo de tipos C++/Arduino (const int, int, float) o 'let' a 'var' válido de JS
+            cleaned = cleaned.replace(/\b(?:const\s+int|int|float|double)\s+([a-zA-Z0-9_]+)\b/g, 'var $1');
+            cleaned = cleaned.replace(/\blet\s+([a-zA-Z0-9_]+)\b/g, 'var $1');
+            generatedCode = cleaned;
 
             if (scopeLabel) scopeLabel.textContent = 'Learner :)';
             if (scopeBtn) {
