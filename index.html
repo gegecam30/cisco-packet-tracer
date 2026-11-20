@@ -408,47 +408,111 @@
       });
     }
 
-    // 2. Botón Learner: Clic copia el código directamente al portapapeles
+    // Modo actual: 'iot' (Learner) o 'theory' (Courses)
+    var currentMode = localStorage.getItem('cisco_app_mode') || 'iot';
+
+    function updateModeUI() {
+      var base = currentMode === 'iot' ? 'Learner' : 'Courses';
+      if (scopeLabel) {
+        if (isQuerying) {
+          scopeLabel.textContent = base + ' •';
+        } else if (generatedCode) {
+          scopeLabel.textContent = base + ' :)';
+        } else {
+          scopeLabel.textContent = base;
+        }
+      }
+      if (scopeBtn) {
+        scopeBtn.title = 'Modo actual: ' + (currentMode === 'iot' ? 'IoT MCU JavaScript (Learner)' : 'Teoría & Examen General (Courses)') + ' | Clic: Copiar | Clic derecho o flechita: Cambiar modo (Ctrl+Shift+M)';
+      }
+    }
+
+    function toggleMode() {
+      currentMode = currentMode === 'iot' ? 'theory' : 'iot';
+      localStorage.setItem('cisco_app_mode', currentMode);
+      updateModeUI();
+      log('Modo cambiado a: ' + (currentMode === 'iot' ? 'IoT MCU JavaScript (Learner)' : 'Teoría & Preguntas Generales (Courses)'));
+    }
+
+    updateModeUI();
+
+    window.addEventListener('keydown', function(e) {
+      if (e.ctrlKey && e.shiftKey && (e.key === 'M' || e.key === 'm')) {
+        e.preventDefault();
+        toggleMode();
+      }
+    });
+
+    // 2. Botón Learner / Courses: Clic copia el código directamente al portapapeles
     if (scopeBtn) {
       scopeBtn.style.cursor = 'pointer';
+
+      // Clic normal: Copiar código o respuesta
       scopeBtn.addEventListener('click', function () {
         if (!generatedCode) {
-          log('Aviso: Todavía no hay código en memoria. Ingresa una consulta en la barra de búsqueda.');
+          log('Aviso: Todavía no hay respuesta en memoria. Ingresa una consulta en la barra de búsqueda.');
           return;
         }
 
         navigator.clipboard.writeText(generatedCode).then(function () {
-          var original = scopeLabel ? scopeLabel.textContent : 'Learner';
+          var base = currentMode === 'iot' ? 'Learner' : 'Courses';
           if (scopeLabel) scopeLabel.textContent = 'Copied!';
           scopeBtn.style.color = '#249443';
           scopeBtn.style.fontWeight = '700';
 
           setTimeout(function () {
-            if (scopeLabel) scopeLabel.textContent = 'Learner :)';
+            if (scopeLabel) scopeLabel.textContent = base + ' :)';
             scopeBtn.style.fontWeight = '';
           }, 1200);
 
-          log('Código copiado exitosamente al portapapeles.');
+          log('Copiado exitosamente al portapapeles (' + (currentMode === 'iot' ? 'Código IoT' : 'Teoría / General') + ').');
         }).catch(function (err) {
           log('Error al copiar al portapapeles: ' + err);
         });
       });
+
+      // Clic derecho: Cambiar modo discretamente
+      scopeBtn.addEventListener('contextmenu', function (e) {
+        e.preventDefault();
+        toggleMode();
+      });
+
+      // Clic en la flechita caret: Cambiar modo
+      var caret = scopeBtn.querySelector('.caret');
+      if (caret) {
+        caret.style.cursor = 'pointer';
+        caret.addEventListener('click', function (e) {
+          e.stopPropagation();
+          toggleMode();
+        });
+      }
     }
 
-    // 3. Consulta de IA especializada en Cisco Packet Tracer
+    // 3. Consulta de IA especializada (IoT MCU JS o Teoría General)
     function ejecutarConsulta(promptText) {
       var key = getKey();
       if (!key) {
         log('Error: Falta la API Key. Escríbela en el puntito al pie de página.');
-        if (scopeLabel) scopeLabel.textContent = 'Learner !';
+        if (scopeLabel) scopeLabel.textContent = (currentMode === 'iot' ? 'Learner' : 'Courses') + ' !';
         return;
       }
 
-      isQuerying = true;
-      if (scopeLabel) scopeLabel.textContent = 'Learner •';
-      log('Consulta enviada: "' + promptText + '"');
+      var activeMode = currentMode;
+      // Auto-detección inteligente de respaldo si el usuario está en Learner pero pega una pregunta con opciones múltiples
+      var hasMultipleChoice = /\b[A-Da-d][\)\.]\s+[^\n]+/.test(promptText) || /(?:opci[oó]n|alternativa|verdadero|falso)\b/i.test(promptText);
+      var hasMCUKeywords = /(?:MCU|pin|digitalRead|digitalWrite|analogRead|setup|loop|led|sensor|temperatura|ventilador|arduino|cisco packet tracer iot)/i.test(promptText);
+      if (currentMode === 'iot' && hasMultipleChoice && !hasMCUKeywords) {
+        activeMode = 'theory';
+        log('[Auto-detección]: Pregunta teórica/opción múltiple detectada. Aplicando modo examen.');
+      }
 
-      var systemPrompt = [
+      isQuerying = true;
+      var base = currentMode === 'iot' ? 'Learner' : 'Courses';
+      if (scopeLabel) scopeLabel.textContent = base + ' •';
+      log('Consulta enviada [' + (activeMode === 'iot' ? 'Modo IoT' : 'Modo Teoría') + ']: "' + promptText + '"');
+
+      // System Prompt 1: Modo IoT MCU JavaScript (El existente, intacto con los 8+ pilares)
+      var iotSystemPrompt = [
         "Eres un asistente técnico ultra-especializado y definitivo para Cisco Packet Tracer (Redes e IoT en MCU/SBC).",
         "",
         "=== DATASET Y REGLAS TÉCNICAS INFALIBLES PARA JAVASCRIPT EN MCU/SBC (PACKET TRACER) ===",
@@ -469,7 +533,7 @@
         "   - Prohibido cualquier residuo de C++/Arduino como 'int', 'float', 'void', 'const int'.",
         "   - Prohibido usar window, document, fetch, alert, prompt, require, DOM o HTML.",
         "",
-        "3. SÍNTESIS ADITIVA DE COLOR EN RGB LED (PACKET TRACER):",
+        "4. SÍNTESIS ADITIVA DE COLOR EN RGB LED (PACKET TRACER):",
         "   - El componente físico RGB LED de Packet Tracer tiene canales independientes:",
         "     * Terminal Roja = Canal Rojo (Red)",
         "     * Terminal Verde = Canal Verde (Green)",
@@ -479,28 +543,28 @@
         "   - ¡NUNCA USES EL PIN AZUL PARA EL COLOR AMARILLO! Si enciendes el pin azul, el foco brilla en AZUL.",
         "   - Si un ejercicio de semáforo solo pide Rojo, Amarillo y Verde, NO conectes ni declares el pin Azul innecesariamente.",
         "",
-        "4. DISCRIMINACIÓN DE COMPONENTES: digitalWrite VS customWrite:",
+        "5. DISCRIMINACIÓN DE COMPONENTES: digitalWrite VS customWrite:",
         "   - Componentes electrónicos simples (carpeta Components -> Actuators): LEDs, RGB LED, relés, motores simples, buzzers simples:",
         "     -> Usar digitalWrite(pin, HIGH / LOW) o analogWrite(pin, valor).",
         "   - Dispositivos inteligentes de entorno (carpeta Home / Smart City): Sirenas (Siren), rociadores (Fire Sprinkler), puertas (Door), ventanas (Window):",
         "     -> Poseen estados múltiples. Usar customWrite(pin, '0') para apagado/cerrado, y customWrite(pin, '1') o '2' para encendido/alarma/abierto.",
         "     -> Nota: Si en el enunciado del examen se pide explícitamente controlar la sirena o rociador con digitalWrite(pin, HIGH/LOW), respeta la indicación del docente.",
         "",
-        "5. SELECCIÓN DE INTERFACES Y SENSORES FÍSICOS:",
+        "6. SELECCIÓN DE INTERFACES Y SENSORES FÍSICOS:",
         "   - Para cableado directo con MCU (IoT Custom Cable en D0..D5 o A0..A5), prioriza componentes de 'Components' -> 'Sensors' (Push Button, Switch, Thermistor, Potentiometer, Light Sensor, etc.).",
         "   - Si se usan sensores/actuadores de la carpeta 'Home', recuerda que algunos vienen configurados con tarjeta de red por defecto y requieren configurar su I/O para cable IoT.",
         "",
-        "6. ANTI-OVERENGINEERING (ESTILO LIMPIO PARA EXÁMENES UNIVERSITARIOS):",
+        "7. ANTI-OVERENGINEERING (ESTILO LIMPIO PARA EXÁMENES UNIVERSITARIOS):",
         "   - Prioriza la simplicidad, la rapidez de tipeo y la legibilidad: código directo de 20 a 30 líneas.",
         "   - Estructura lineal y limpia con setup(), loop(), if / else if / else y delay().",
         "   - PROHIBIDO agregar bucles de polling innecesarios como 'while (i < 4000) { if(...) break; delay(100); }' a menos que el usuario lo solicite expresamente.",
         "   - Para prioridades o interrupciones (como un botón peatonal o botón de pánico), evalúalo al inicio de loop(): if (digitalRead(BOTON) == HIGH) { accion_prioritaria(); } else { ciclo_normal(); }.",
         "",
-        "7. PROTECCIÓN DEL HILO DE SIMULACIÓN (EVITAR CPU FREEZE):",
+        "8. PROTECCIÓN DEL HILO DE SIMULACIÓN (EVITAR CPU FREEZE):",
         "   - La función loop() se ejecuta de manera continua en el simulador.",
         "   - Para evitar congelar el simulador de Packet Tracer (100% CPU) y permitir que la interfaz detecte clics de usuario (Alt + clic), loop() DEBE contener al menos un delay(100) al final o en cada ciclo.",
         "",
-        "8. SEPARACIÓN ESTRICTA ENTRE PINES ANALÓGICOS (A0..A5) Y DIGITALES (D0..D5):",
+        "9. SEPARACIÓN ESTRICTA ENTRE PINES ANALÓGICOS (A0..A5) Y DIGITALES (D0..D5):",
         "   - En Packet Tracer, digitalRead(pin) y digitalWrite(pin) operan EXCLUSIVAMENTE sobre pines digitales D0 a D5.",
         "   - analogRead(pin) opera EXCLUSIVAMENTE sobre pines analógicos A0 a A5.",
         "   - ¡PROHIBIDO REPETIR O COLISIONAR PINES DIGITALES! Cada componente digital DEBE tener un pin digital único (D0, D1, D2, D3, D4, D5).",
@@ -516,7 +580,7 @@
         "     var EXTRACTOR = 4;  // Puerto digital D4 (digitalWrite)",
         "   - Nunca conectes un sensor de movimiento/PIR a un pin analógico 'A1' para luego leerlo con digitalRead(1), porque digitalRead(1) leerá el pin digital D1.",
         "",
-        "9. MINI-GUÍA DISCRETA DE CONEXIÓN FÍSICA EN COMENTARIOS AL INICIO:",
+        "10. MINI-GUÍA DISCRETA DE CONEXIÓN FÍSICA EN COMENTARIOS AL INICIO:",
         "   - Al principio del archivo JavaScript, incluye SIEMPRE un bloque breve y discreto de comentarios (//) indicando exactamente qué cable va a qué terminal física:",
         "     // --- CONEXIONES (IoT Custom Cable) ---",
         "     // MCU A0 -> Sensor de Temperatura (terminal A0)",
@@ -538,10 +602,40 @@
         "- NO añadas introducciones, texto fuera del código ni despedidas de relleno."
       ].join('\n');
 
+      // System Prompt 2: Modo Teoría & Examen General (Courses)
+      var theorySystemPrompt = [
+        "Eres un docente evaluador y experto universitario en Arquitectura de Computadoras, Redes Cisco (CCNA / NetAcad), Telecomunicaciones, Sistemas Digitales e Internet de las Cosas (IoT).",
+        "",
+        "OBJETIVO: Proporcionar respuestas de máxima precisión técnica, directas, ultra-claras y al grano para exámenes universitarios.",
+        "",
+        "REGLAS DE FORMATO SEGÚN EL TIPO DE PREGUNTA:",
+        "1. SI ES UNA PREGUNTA DE OPCIÓN MÚLTIPLE (A, B, C, D...):",
+        "   - Primera línea OBLIGATORIA: Señala directamente la opción correcta (ej: 'Respuesta correcta: B) Enrutamiento dinámico' o 'B) Enrutamiento dinámico').",
+        "   - Siguientes 1 a 3 líneas: Justificación técnica concisa explicando por qué esa opción es la correcta y/o por qué se descartan las demás.",
+        "",
+        "2. SI ES UNA PREGUNTA DE VERDADERO O FALSO:",
+        "   - Primera línea: Señala 'VERDADERO' o 'FALSO'.",
+        "   - Siguiente línea: Explicación técnica concisa de 1 línea.",
+        "",
+        "3. SI ES UNA PREGUNTA TEÓRICA ABIERTA, DEFINICIÓN O COMPARACIÓN:",
+        "   - Proporciona una respuesta técnica precisa, estructurada y directa.",
+        "   - Si se comparan elementos (ej: TCP vs UDP, Hub vs Switch), usa viñetas cortas y claras.",
+        "",
+        "4. SI ES UN PROBLEMA DE SUBREDES, MÁSCARAS O DIRECCIONAMIENTO IP (VLSM / CIDR):",
+        "   - Muestra la tabla o resultados exactos: Dirección de Red, Máscara, Primera IP útil, Última IP útil, Broadcast, Gateway.",
+        "",
+        "FORMATO ESTRICTO DE SALIDA:",
+        "- NO uses introducciones de saludo tipo '¡Hola!' ni 'Claro, aquí tienes la respuesta:'.",
+        "- NO añadas despedidas ni textos de cortesía.",
+        "- Ve directo a la respuesta técnica para que sea 100% útil e inmediata de copiar o tipear."
+      ].join('\n');
+
+      var finalSystemPrompt = activeMode === 'iot' ? iotSystemPrompt : theorySystemPrompt;
+
       var payload = {
         contents: [{
           parts: [{
-            text: systemPrompt + "\n\nREQUERIMIENTO O EJERCICIO A RESOLVER:\n" + promptText
+            text: finalSystemPrompt + "\n\nREQUERIMIENTO O PREGUNTA A RESOLVER:\n" + promptText
           }]
         }],
         generationConfig: {
@@ -613,29 +707,33 @@
           if (data && data.candidates && data.candidates[0] && data.candidates[0].content && data.candidates[0].content.parts) {
             var raw = data.candidates[0].content.parts[0].text || '';
             var cleaned = raw.replace(/```[a-zA-Z]*\n?/g, '').replace(/```/g, '').trim();
-            // Auto-corrección: convertir cualquier residuo de tipos C++/Arduino (const int, int, float) o 'let'/'const' a 'var' válido de JS
-            cleaned = cleaned.replace(/\b(?:const\s+int|int|float|double)\s+([a-zA-Z0-9_]+)\b/g, 'var $1');
-            cleaned = cleaned.replace(/\b(?:let|const)\s+([a-zA-Z0-9_]+)\b/g, 'var $1');
-            // Auto-corrección: convertir identificadores de pin sueltos como '= A0;' o '= D1;' a número puro '= 0;' o '= 1;'
-            cleaned = cleaned.replace(/=\s*[aAdD]([0-5])\s*;/g, '= $1;');
-            // Auto-corrección: si las llamadas pinMode quedaron sueltas, envolverlas en function setup()
-            if (!/function\s+setup\s*\(/.test(cleaned) && /pinMode\s*\(/.test(cleaned)) {
-              cleaned = cleaned.replace(/((?:[ \t]*pinMode\s*\([^;]+;\s*\n?)+)/, 'function setup() {\n$1}\n\n');
+            if (activeMode === 'iot') {
+              // Auto-corrección: convertir cualquier residuo de tipos C++/Arduino (const int, int, float) o 'let'/'const' a 'var' válido de JS
+              cleaned = cleaned.replace(/\b(?:const\s+int|int|float|double)\s+([a-zA-Z0-9_]+)\b/g, 'var $1');
+              cleaned = cleaned.replace(/\b(?:let|const)\s+([a-zA-Z0-9_]+)\b/g, 'var $1');
+              // Auto-corrección: convertir identificadores de pin sueltos como '= A0;' o '= D1;' a número puro '= 0;' o '= 1;'
+              cleaned = cleaned.replace(/=\s*[aAdD]([0-5])\s*;/g, '= $1;');
+              // Auto-corrección: si las llamadas pinMode quedaron sueltas, envolverlas en function setup()
+              if (!/function\s+setup\s*\(/.test(cleaned) && /pinMode\s*\(/.test(cleaned)) {
+                cleaned = cleaned.replace(/((?:[ \t]*pinMode\s*\([^;]+;\s*\n?)+)/, 'function setup() {\n$1}\n\n');
+              }
             }
             generatedCode = cleaned;
 
-            if (scopeLabel) scopeLabel.textContent = 'Learner :)';
+            var base = currentMode === 'iot' ? 'Learner' : 'Courses';
+            if (scopeLabel) scopeLabel.textContent = base + ' :)';
             if (scopeBtn) {
               scopeBtn.style.color = '#249443';
             }
-            log('[ÉXITO] Código generado correctamente con ' + result.model + ' (' + generatedCode.length + ' caracteres). Listo para copiar haciendo clic en Learner.');
+            log('[ÉXITO] ' + (activeMode === 'iot' ? 'Código IoT generado' : 'Respuesta teórica generada') + ' con ' + result.model + ' (' + generatedCode.length + ' caracteres). Listo para copiar haciendo clic en ' + base + '.');
           } else {
             throw new Error('Respuesta vacía de Google');
           }
         })
         .catch(function (err) {
           isQuerying = false;
-          if (scopeLabel) scopeLabel.textContent = 'Learner';
+          var base = currentMode === 'iot' ? 'Learner' : 'Courses';
+          if (scopeLabel) scopeLabel.textContent = base;
           log('Error al generar: ' + err.message);
         });
     }
