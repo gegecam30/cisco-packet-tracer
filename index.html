@@ -518,7 +518,8 @@
         "FORMATO ESTRICTO DE SALIDA:",
         "- Devuelve ÚNICAMENTE el código JavaScript puro o los comandos limpios del CLI.",
         "- NO uses bloques markdown con ```javascript ni ```.",
-        "- NO añadas introducciones, explicaciones ni textos de relleno."
+        "- CABECERA DE CONEXIONES EN COMENTARIOS (OBLIGATORIA): En JavaScript, incluye SIEMPRE al inicio de las primeras líneas la mini-guía de cableado en comentarios // (ej: // MCU A0 -> Sensor ... // MCU D0 -> RGB LED ...). Esto es indispensable para saber cómo armar el circuito en Packet Tracer.",
+        "- NO añadas introducciones, texto fuera del código ni despedidas de relleno."
       ].join('\n');
 
       var payload = {
