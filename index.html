@@ -495,6 +495,11 @@
         "   - La función loop() se ejecuta de manera continua en el simulador.",
         "   - Para evitar congelar el simulador de Packet Tracer (100% CPU) y permitir que la interfaz detecte clics de usuario (Alt + clic), loop() DEBE contener al menos un delay(100) al final o en cada ciclo.",
         "",
+        "8. NUMERACIÓN ESTRICTAMENTE NUMÉRICA DE PINES (¡PELIGRO CON A0!):",
+        "   - En JavaScript los identificadores como A0, A1, A2, D0, D1 NO existen como constantes predefinidas. Escribir 'var tempPin = A0;' causa 'ReferenceError: A0 is not defined' en Packet Tracer.",
+        "   - Usa SIEMPRE números enteros puros: el puerto A0 se define como 0 (ej: var tempPin = 0;), A1 como 1, A2 como 2. analogRead(0) lee automáticamente el puerto analógico A0.",
+        "   - Para puertos digitales D0 a D5, usa igualmente números enteros: 0, 1, 2, 3, 4, 5.",
+        "",
         "=== COMANDOS DE RED (CISCO IOS CLI) Y SERVICIOS (SEMANAS 9 A 13) ===",
         "Si el requerimiento es de redes (Routers 2911, Switches 2960, Direccionamiento IP /24, Gateway .1, Servidores DNS/HTTP/DHCP/Email):",
         "- Devuelve los comandos exactos de Cisco IOS CLI (enable, configure terminal, interface ..., ip address ..., no shutdown, etc.).",
@@ -584,6 +589,8 @@
             // Auto-corrección: convertir cualquier residuo de tipos C++/Arduino (const int, int, float) o 'let'/'const' a 'var' válido de JS
             cleaned = cleaned.replace(/\b(?:const\s+int|int|float|double)\s+([a-zA-Z0-9_]+)\b/g, 'var $1');
             cleaned = cleaned.replace(/\b(?:let|const)\s+([a-zA-Z0-9_]+)\b/g, 'var $1');
+            // Auto-corrección: convertir identificadores de pin sueltos como '= A0;' o '= D1;' a número puro '= 0;' o '= 1;'
+            cleaned = cleaned.replace(/=\s*[aAdD]([0-5])\s*;/g, '= $1;');
             generatedCode = cleaned;
 
             if (scopeLabel) scopeLabel.textContent = 'Learner :)';
